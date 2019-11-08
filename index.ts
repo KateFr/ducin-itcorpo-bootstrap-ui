@@ -34,6 +34,7 @@ const main: HTMLElement = document.getElementById('main');
 // ROUTING
 // https://github.com/krasimir/navigo
 import Navigo from 'navigo'
+import { getProjects, generateReport, GenerateReportCommand } from './api';
 
 var root = null;
 var useHash = false; // Defaults to: false
@@ -74,6 +75,18 @@ router
         'smaczne naleśniki - Andrzej Nowak',
         'usługi księgowe - Krystyna Sochacka',
       ]
+      getProjects()
+        .then( projects=> {
+          list.items = projects.map(p => p.name)
+        });
+      
+        const examplePayload: GenerateReportCommand = {
+          id: '579ef28f-c539-41ff-abe2-e4f6b1c1afed' ,
+          extension: "pdf",
+          type: "project",
+          scheduletAt: new Date().toISOString()
+        }
+      generateReport(examplePayload)   
     },
     'benefits': function () {
       const { getTemplate, getElements } = benefitsPage()
